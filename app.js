@@ -3,20 +3,9 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require("body-parser");
-const { Pool } = require('pg');
+const db = require('./api/config/database');
 
-//Creating database pool
-const pool = new Pool({
-    user: process.env.PGUSER,
-    host: process.env.PGHOST,
-    database: process.env.PGDATABASE,
-    password: process.env.PGPASSWORD,
-    port: process.env.PGPORT,
-})
-exports.pool = pool;
-
-//Get the routes
-const userRoutes = require('./api/routes/users');
+db.authenticate().then(() => console.log("Connected")).catch(() => console.log("error"));
 
 //Parsing the body
 app.use(morgan('dev'));
@@ -36,6 +25,9 @@ app.use((req, res, next) => {
     }
     next();
 });
+
+//Get the routes
+const userRoutes = require('./api/routes/users');
 
 //Routes which should handle the request
 app.use('/users', userRoutes);
