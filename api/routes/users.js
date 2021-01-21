@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const { pool } = require('../../app');
 const UserController = require('../controllers/users');
 
 //Get all users

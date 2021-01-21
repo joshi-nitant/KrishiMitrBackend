@@ -4,8 +4,8 @@ const db = require('../config/database');
 const Users = db.define('Users', {
     userId: {
         type: Sequelize.INTEGER,
-        primaryKey: '1',
-        autoIncrement: '1'
+        primaryKey: true,
+        autoIncrement: true
     },
     userName: {
         type: Sequelize.STRING
@@ -30,6 +30,7 @@ const Users = db.define('Users', {
         type: Sequelize.STRING
     }
 }, {
+    freezeTableName: true,
     timestamps: false
 });
 
