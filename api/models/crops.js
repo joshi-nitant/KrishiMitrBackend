@@ -4,13 +4,14 @@ const db = require('../config/database');
 const Crop = db.define('Crop', {
     cropId: {
         type: Sequelize.INTEGER,
-        primaryKey: '1',
-        autoIncrement: '1'
+        primaryKey: true,
+        autoIncrement: true
     },
     cropName: {
         type: Sequelize.STRING
     }
 }, {
+    freezeTableName: true,
     timestamps: false
 });
 

@@ -6,17 +6,25 @@ const User = require('./users');
 const UserCrop = db.define('UserCrop', {
     userCropId: {
         type: Sequelize.INTEGER,
-        primaryKey: '1',
-        autoIncrement: '1'
+        primaryKey: true,
+        autoIncrement: true
     },
     userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+            model: 'Users',
+            key: 'userId',
+        }
     },
     cropId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+            model: 'Crop',
+            key: 'cropId',
+        }
     },
     cropDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
     },
     cropCity: {
         type: Sequelize.STRING
@@ -31,21 +39,16 @@ const UserCrop = db.define('UserCrop', {
         type: Sequelize.DECIMAL
     },
 }, {
+    freezeTableName: true,
     timestamps: false
 });
 
 Crop.hasMany(UserCrop, {
-    foreignKey: {
-        name: 'cropId',
-        onDelete: 'CASCADE'
-    }
+    onDelete: 'CASCADE',
 });
 
 User.hasMany(UserCrop, {
-    foreignKey: {
-        name: 'userId',
-        onDelete: 'CASCADE'
-    }
+    onDelete: 'CASCADE',
 });
 
 module.exports = UserCrop;

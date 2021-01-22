@@ -28,9 +28,16 @@ app.use((req, res, next) => {
 
 //Get the routes
 const userRoutes = require('./api/routes/users');
+const cropRoutes = require('./api/routes/crops');
+const userCropRoutes = require('./api/routes/user_crops');
+const timelineEventRoutes = require('./api/routes/timeline_event');
+
 
 //Routes which should handle the request
 app.use('/users', userRoutes);
+app.use('/crops', cropRoutes);
+app.use('/userCrops', userCropRoutes);
+app.use('/timeline', timelineEventRoutes);
 
 //If nothing is matched
 app.use((req, res, next) => {

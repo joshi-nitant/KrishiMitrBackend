@@ -5,14 +5,18 @@ const UserCrop = require('./user_crops');
 const TimelineEvent = db.define('UserCrop', {
     timelineId: {
         type: Sequelize.INTEGER,
-        primaryKey: '1',
-        autoIncrement: '1'
+        primaryKey: true,
+        autoIncrement: true
     },
     title: {
         type: Sequelize.INTEGER
     },
     userCropId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+            model: 'UserCrop',
+            key: 'userCropId',
+        }
     },
     timelineDate: {
         type: Sequelize.DATE
@@ -21,14 +25,12 @@ const TimelineEvent = db.define('UserCrop', {
         type: Sequelize.STRING
     },
 }, {
+    freezeTableName: true,
     timestamps: false
 });
 
 UserCrop.hasMany(TimelineEvent, {
-    foreignKey: {
-        name: 'timelineId',
-        onDelete: 'CASCADE'
-    }
+    onDelete: 'CASCADE',
 });
 
 module.exports = TimelineEvent;
