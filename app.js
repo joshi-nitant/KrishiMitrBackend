@@ -31,6 +31,7 @@ const userRoutes = require('./api/routes/users');
 const cropRoutes = require('./api/routes/crops');
 const userCropRoutes = require('./api/routes/user_crops');
 const timelineEventRoutes = require('./api/routes/timeline_event');
+const postRoutes = require('./api/routes/post');
 
 
 //Routes which should handle the request
@@ -38,6 +39,7 @@ app.use('/users', userRoutes);
 app.use('/crops', cropRoutes);
 app.use('/userCrops', userCropRoutes);
 app.use('/timeline', timelineEventRoutes);
+app.use('/posts', postRoutes);
 
 //If nothing is matched
 app.use((req, res, next) => {
