@@ -32,10 +32,13 @@ const UserCrop = db.define('UserCrop', {
     cropState: {
         type: Sequelize.STRING
     },
-    cropBreed: {
+    croptaluka: {
         type: Sequelize.STRING
     },
-    cropArea: {
+    breed: {
+        type: Sequelize.STRING
+    },
+    area: {
         type: Sequelize.DECIMAL
     },
 }, {
@@ -45,10 +48,12 @@ const UserCrop = db.define('UserCrop', {
 
 Crop.hasMany(UserCrop, {
     onDelete: 'CASCADE',
+    foreignKey: 'cropId'
 });
 
 User.hasMany(UserCrop, {
     onDelete: 'CASCADE',
+    foreignKey: 'userId'
 });
 
 module.exports = UserCrop;

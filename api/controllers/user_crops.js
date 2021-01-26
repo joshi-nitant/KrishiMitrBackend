@@ -17,18 +17,19 @@ exports.get_all_user_crop = (req, res, next) => {
 };
 
 exports.add_user_crop = (req, res, next) => {
-
-    const UserCrop = {
+    console.log(req.body);
+    const userCrop = {
         "userId": req.body.userId,
         "cropId": req.body.cropId,
         "cropDate": req.body.cropDate,
         "cropCity": req.body.cropCity,
         "cropState": req.body.cropState,
+        "cropTaluka": req.body.cropTaluka,
         "area": req.body.area,
         "breed": req.body.breed
     }
 
-    UserCrop.create(UserCrop).then(data => { res.status(200).json(data); }).catch(err => {
+    UserCrop.create(userCrop).then(data => { res.status(201).json(data); }).catch(err => {
         console.log(err);
         res.status(500).json({ error: err });
     })
@@ -37,7 +38,7 @@ exports.add_user_crop = (req, res, next) => {
 exports.update_user_crop = (req, res, next) => {
     const id = req.params.userCropId;
 
-    Users.update(req.body, { where: { userCropId: id } }).then(num => {
+    UserCrop.update(req.body, { where: { userCropId: id } }).then(num => {
         if (num == 1) {
             res.status(200).json({
                 message: "Updated Succefully"
@@ -58,7 +59,7 @@ exports.update_user_crop = (req, res, next) => {
 exports.delete_user_crop = (req, res, next) => {
     const id = req.params.userCropId;
 
-    Users.destroy({ where: { userCropId: id } }).then(num => {
+    UserCrop.destroy({ where: { userCropId: id } }).then(num => {
         if (num == 1) {
             res.status(200).json({
                 message: "Deleted Succefully"

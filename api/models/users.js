@@ -28,7 +28,10 @@ const Users = db.define('Users', {
 
     userType: {
         type: Sequelize.STRING
-    }
+    },
+    userpassword: {
+        type: Sequelize.STRING
+    },
 }, {
     freezeTableName: true,
     timestamps: false
