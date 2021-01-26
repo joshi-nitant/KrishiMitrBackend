@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
-const TimeLineEvent = require('./timelive_events')
+const TimeLineEvent = require('./timelive_events');
+const UserCrop = require('./user_crops');
 
 const Post = db.define('Post', {
     postId: {
@@ -13,6 +14,13 @@ const Post = db.define('Post', {
         references: {
             model: 'TimeLineEvent',
             key: 'timelineId',
+        }
+    },
+    userCropId: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: 'UserCrop',
+            key: 'userCropId',
         }
     },
     likeCount: {
@@ -30,6 +38,10 @@ const Post = db.define('Post', {
 TimeLineEvent.hasMany(Post, {
     onDelete: 'CASCADE',
     foreignKey: 'timeLineId'
-})
+});
+UserCrop.hasMany(Post, {
+    onDelete: 'CASCADE',
+    foreignKey: 'userCropId'
+});
 
 module.exports = Post;

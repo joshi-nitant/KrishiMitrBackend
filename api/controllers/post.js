@@ -21,7 +21,8 @@ exports.add_post = (req, res, next) => {
     const post = {        
         "timeLineId": req.body.timeLineId,
         "likeCount": req.body.likeCount,
-        "postDescription": req.body.postDescription,        
+        "postDescription": req.body.postDescription,
+        "userCropId": req.body.userCropId,
     }
 
     Post.create(post).then(data => { res.status(201).json(data); }).catch(err => {
