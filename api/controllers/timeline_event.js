@@ -1,8 +1,8 @@
 const TimelineEvent = require('../models/timelive_events');
 
 exports.get_all_timelines = (req, res, next) => {
-    const userCropdId = req.params.userCropdId;
-    TimelineEvent.findAll({ where: { userCropdId: userCropdId } }).then(timelines => {
+    const userCropId = req.params.userCropId;
+    TimelineEvent.findAll({ where: { userCropId: userCropId } }).then(timelines => {
         const response = {
             count: timelines.length,
             timelines: timelines,
@@ -37,10 +37,10 @@ exports.add_timeline = (req, res, next) => {
         "title": req.body.title,
         "description": req.body.description,
         "timelineDate": req.body.timelineDate,
-        "userCropdId": req.body.userCropdId
+        "userCropId": req.body.userCropId
     }
 
-    TimelineEvent.create(Timeline).then(data => { res.status(200).json(data); }).catch(err => {
+    TimelineEvent.create(Timeline).then(data => { res.status(201).json(data); }).catch(err => {
         console.log(err);
         res.status(500).json({ error: err });
     })

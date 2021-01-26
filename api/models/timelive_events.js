@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../config/database');
 const UserCrop = require('./user_crops');
 
-const TimelineEvent = db.define('UserCrop', {
+const TimelineEvent = db.define('TimeLineEvent', {
     timelineId: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -31,6 +31,7 @@ const TimelineEvent = db.define('UserCrop', {
 
 UserCrop.hasMany(TimelineEvent, {
     onDelete: 'CASCADE',
+    foreignKey: 'userCropId'
 });
 
 module.exports = TimelineEvent;
