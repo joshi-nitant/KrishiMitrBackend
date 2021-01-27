@@ -24,7 +24,7 @@ exports.add_user_crop = (req, res, next) => {
         "cropDate": req.body.cropDate,
         "cropCity": req.body.cropCity,
         "cropState": req.body.cropState,
-        "cropTaluka": req.body.cropTaluka,
+        "croptaluka": req.body.croptaluka,
         "area": req.body.area,
         "breed": req.body.breed
     }

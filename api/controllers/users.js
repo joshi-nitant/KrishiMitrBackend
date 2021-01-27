@@ -54,7 +54,7 @@ exports.register_user = (req, res, next) => {
                         "userpassword": hash
                     }
 
-                    Users.create(User).then(data => { res.status(200).json(data); }).catch(err => {
+                    Users.create(User).then(data => { res.status(201).json(data); }).catch(err => {
                         console.log(err);
                         res.status(500).json({ error: err });
                     });
@@ -97,6 +97,7 @@ exports.login_user = (req, res, next) => {
                     );
                     return res.status(200).json({
                         message: "Auth successful",
+                        userId: users[0].userId,
                         token: token
                     });
                 }
@@ -115,23 +116,40 @@ exports.login_user = (req, res, next) => {
 
 exports.update_user = (req, res, next) => {
     const id = req.params.userId;
-
-    Users.update(req.body, { where: { userId: id } }).then(num => {
-        if (num == 1) {
-            res.status(200).json({
-                message: "Updated Succefully"
+    bcrypt.hash(req.body.userpassword, 10, (err, hash) => {
+        if (err) {
+            return res.status(500).json({
+                error: err
             });
         } else {
-            res.status(200).json({
-                message: "Updation Unsuccefull. May be the row not found."
+            const User = {
+                "userName": req.body.userName,
+                "userContactNumber": req.body.userContactNumber,
+                "userCity": req.body.userCity,
+                "userState": req.body.userState,
+                "userpassword": hash
+            }
+            Users.update(User, { where: { userId: id } }).then(num => {
+                if (num == 1) {
+                    res.status(200).json({
+                        message: "Updated Succefully"
+                    });
+                } else {
+                    res.status(200).json({
+                        message: "Updation Unsuccefull. May be the row not found."
+                    });
+                }
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error: err,
+                })
             });
         }
-    }).catch(err => {
-        console.log(err);
-        res.status(500).json({
-            error: err,
-        })
     });
+
+
+
 };
 
 exports.delete_user = (req, res, next) => {
