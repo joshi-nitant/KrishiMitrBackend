@@ -1,4 +1,6 @@
 const Users = require('../models/users');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 exports.get_all_users = (req, res, next) => {
     Users.findAll().then(users => {
@@ -30,20 +32,86 @@ exports.get_specific_users = (req, res, next) => {
     });
 };
 
-exports.add_user = (req, res, next) => {
+exports.register_user = (req, res, next) => {
 
-    const User = {
-        "userName": req.body.userName,
-        "userContactNumber": req.body.userContactNumber,
-        "userCity": req.body.userCity,
-        "userState": req.body.userState
-    }
+    Users.findAll({ where: { userContactNumber: req.body.userContactNumber } }).then(users => {
+        if (users.length >= 1) {
+            return res.status(409).json({
+                message: "User already exists with same contact number",
+            });
+        } else {
+            bcrypt.hash(req.body.userpassword, 10, (err, hash) => {
+                if (err) {
+                    return res.status(500).json({
+                        error: err
+                    });
+                } else {
+                    const User = {
+                        "userName": req.body.userName,
+                        "userContactNumber": req.body.userContactNumber,
+                        "userCity": req.body.userCity,
+                        "userState": req.body.userState,
+                        "userpassword": hash
+                    }
 
-    Users.create(User).then(data => { res.status(200).json(data); }).catch(err => {
-        console.log(err);
-        res.status(500).json({ error: err });
-    })
+                    Users.create(User).then(data => { res.status(200).json(data); }).catch(err => {
+                        console.log(err);
+                        res.status(500).json({ error: err });
+                    });
+                }
+            });
+
+
+        }
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({
+            error: err,
+        });
+    });
+
 };
+
+exports.login_user = (req, res, next) => {
+    Users.findAll({ where: { userContactNumber: req.body.userContactNumber } })
+        .then(users => {
+            if (users.length < 1) {
+                return res.status(401).json({
+                    message: "Auth failed"
+                });
+            }
+            bcrypt.compare(req.body.userpassword, users[0].userpassword, (err, result) => {
+                if (err) {
+                    return res.status(401).json({
+                        message: "Auth failed"
+                    });
+                }
+                if (result) {
+                    const token = jwt.sign({
+                            userId: users[0].userId,
+                            userContactNumber: users[0].userContactNumber
+                        },
+                        process.env.JWT_KEY, {
+                            expiresIn: "1h"
+                        }
+                    );
+                    return res.status(200).json({
+                        message: "Auth successful",
+                        token: token
+                    });
+                }
+                res.status(401).json({
+                    message: "Auth failed"
+                });
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+}
 
 exports.update_user = (req, res, next) => {
     const id = req.params.userId;

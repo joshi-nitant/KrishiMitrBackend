@@ -4,6 +4,7 @@
         "PGHOST": "localhost",
         "PGPASSWORD": "krishimitr123",
         "PGDATABASE": "krishimitr",
-        "PGPORT": 5432
+        "PGPORT": 5432,
+        "JWT_KEY": "krishimitr123"
     }
 }
