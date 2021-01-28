@@ -17,10 +17,11 @@ exports.get_all_post = (req, res, next) => {
 };
 
 exports.add_post = (req, res, next) => {    
-    console.log(req.body);
+    console.log("here");
+    console.log(req.body)
     const post = {        
         "timeLineId": req.body.timeLineId,
-        "likeCount": req.body.likeCount,
+        "likeCount": 0,
         "postDescription": req.body.postDescription,
         "userCropId": req.body.userCropId,
     }
@@ -29,4 +30,28 @@ exports.add_post = (req, res, next) => {
         console.log(err);        
         res.status(500).json({ error: err});
     })
+};
+
+exports.update_like_count = (req, res, next) => {
+    const id = req.body.postId;
+    const post =  {
+        'likeCount':req.body.likeCount
+    };
+
+    Post.update(post, { where: { postId: id } }).then(num => {
+        if (num == 1) {
+            res.status(200).json({
+                message: "Updated Succefully"
+            });
+        } else {
+            res.status(200).json({
+                message: "Updation Unsuccefull. May be the row not found."
+            });
+        }
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err,
+        })
+    });
 };

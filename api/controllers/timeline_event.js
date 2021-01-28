@@ -39,8 +39,13 @@ exports.add_timeline = (req, res, next) => {
         "timelineDate": req.body.timelineDate,
         "userCropId": req.body.userCropId
     }
-
-    TimelineEvent.create(Timeline).then(data => { res.status(201).json(data); }).catch(err => {
+    TimelineEvent.create(Timeline).then(data => {
+        console.log(data);
+        req.body.postDescription = "Timeline updated";
+        req.body.timeLineId = data.timelineId;
+        req.body.userCropId = null;
+        next();
+    }).catch(err => {
         console.log(err);
         res.status(500).json({ error: err });
     })
