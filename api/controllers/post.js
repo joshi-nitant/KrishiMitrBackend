@@ -1,4 +1,10 @@
+const sequelize = require('../config/database');
+
 const Post = require('../models/post');
+const UserCrop = require('../models/user_crops');
+const TimelineEvent = require('../models/timelive_events');
+const checkAuth = require('../middleware/check-auth');
+
 
 exports.get_all_post = (req, res, next) => {
     // const id = req.params.userId;
@@ -16,10 +22,93 @@ exports.get_all_post = (req, res, next) => {
     })
 };
 
-exports.add_post = (req, res, next) => {    
+exports.get_post_on_crop = (req, res, next) => {
+
+    const id = req.params.cropId;
+    Post.findAll({
+        include: [{
+            // model: UserCrop, where: 
+            // {
+            //     cropId:id                     
+            // } ,
+
+
+
+
+            model: TimelineEvent, include: [{
+                model: UserCrop,
+                where: {
+                    cropId: id
+                },
+                required:true  
+            },],
+            required:true  
+        }
+        ],
+
+    }).then(postTimeline => {
+        Post.findAll({
+            include: [{
+                model: UserCrop, where: 
+                {
+                    cropId:id                     
+                } ,
+                required:true    
+    
+            }
+            ],
+    
+        }).then(postUseCrop=>{
+            
+           
+            var bigPost = postTimeline.map((post)=>{
+    
+                return {
+                    postId:post.postId,
+                    postDecription:post.postDescription,
+                    likeCount:post.likeCount,
+                    title:post.TimeLineEvent.title,
+                    userId: post.TimeLineEvent.UserCrop.userId,
+                    postDate:post.TimeLineEvent.timelineDate                                    
+                }
+
+            });
+
+            var bigPost2 = postUseCrop.map((post)=>{
+                return {
+                    postId:post.postId,
+                    postDecription:post.postDescription,
+                    likeCount:post.likeCount,
+                    title:post.UserCrop.breed,
+                    userId: post.UserCrop.userId,
+                    postDate: post.UserCrop.cropDate
+                }
+            });
+            bigPost = bigPost.concat(bigPost2);
+            console.log(bigPost);
+        
+            const allPosts = {
+                count:bigPost.length,
+                post: bigPost
+            }
+            res.status(200).json(allPosts)
+            
+        }).catch(err=>{
+            console.log(err);
+        })
+
+    
+       
+    }).catch(err => {
+        console.log(err);
+    });
+
+}
+
+exports.add_post = (req, res, next) => {
     console.log("here");
     console.log(req.body)
-    const post = {        
+    const post = {
         "timeLineId": req.body.timeLineId,
         "likeCount": 0,
         "postDescription": req.body.postDescription,
@@ -27,15 +116,15 @@ exports.add_post = (req, res, next) => {
     }
 
     Post.create(post).then(data => { res.status(201).json(data); }).catch(err => {
-        console.log(err);        
-        res.status(500).json({ error: err});
+        console.log(err);
+        res.status(500).json({ error: err });
     })
 };
 
 exports.update_like_count = (req, res, next) => {
     const id = req.body.postId;
-    const post =  {
-        'likeCount':req.body.likeCount
+    const post = {
+        'likeCount': req.body.likeCount
     };
 
     Post.update(post, { where: { postId: id } }).then(num => {
