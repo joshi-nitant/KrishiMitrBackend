@@ -9,8 +9,9 @@ db.authenticate().then(() => console.log("Connected")).catch(() => console.log("
 
 //Parsing the body
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use('/uploads', express.static('uploads'));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 
 //Allowing Cors 
 app.use((req, res, next) => {

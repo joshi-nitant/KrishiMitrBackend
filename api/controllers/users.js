@@ -34,7 +34,7 @@ exports.get_specific_users = (req, res, next) => {
 
 
 exports.register_user = (req, res, next) => {
-
+    console.log("here");
     Users.findAll({ where: { userContactNumber: req.body.userContactNumber } }).then(users => {
         if (users.length >= 1) {
             return res.status(409).json({
@@ -52,7 +52,8 @@ exports.register_user = (req, res, next) => {
                         "userContactNumber": req.body.userContactNumber,
                         "userCity": req.body.userCity,
                         "userState": req.body.userState,
-                        "userpassword": hash
+                        "userpassword": hash,
+                        "userProfileUrl": req.file.path
                     }
 
                     Users.create(User).then(data => { res.status(201).json(data); }).catch(err => {
@@ -93,7 +94,7 @@ exports.login_user = (req, res, next) => {
                             userContactNumber: users[0].userContactNumber
                         },
                         process.env.JWT_KEY, {
-                            expiresIn: "1h"
+                            expiresIn: "5h"
                         }
                     );
                     return res.status(200).json({
@@ -116,9 +117,11 @@ exports.login_user = (req, res, next) => {
 }
 
 exports.update_user = (req, res, next) => {
+    console.log(req.file);
     const id = req.params.userId;
     bcrypt.hash(req.body.userpassword, 10, (err, hash) => {
         if (err) {
+            console.log(err);
             return res.status(500).json({
                 error: err
             });
@@ -128,7 +131,8 @@ exports.update_user = (req, res, next) => {
                 "userContactNumber": req.body.userContactNumber,
                 "userCity": req.body.userCity,
                 "userState": req.body.userState,
-                "userpassword": hash
+                "userpassword": hash,
+                "userProfileUrl": req.file.filename
             }
             Users.update(User, { where: { userId: id } }).then(num => {
                 if (num == 1) {
