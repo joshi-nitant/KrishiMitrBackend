@@ -9,4 +9,6 @@ router.get('/:postId', LikeController.get_like_count);
 //Create new Comment
 router.post('/', LikeController.add_post_like, PostController.update_like_count);
 
+router.delete('/:likeId', LikeController.delete_post_like, PostController.update_like_count);
+
 module.exports = router;

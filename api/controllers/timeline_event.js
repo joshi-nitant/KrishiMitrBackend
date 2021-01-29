@@ -41,7 +41,7 @@ exports.add_timeline = (req, res, next) => {
     }
     TimelineEvent.create(Timeline).then(data => {
 
-        req.body.postDescription = "Timeline updated";
+        req.body.postDescription = req.body.description;
         req.body.timeLineId = data.timelineId;
         req.body.userCropId = null;
         next();
