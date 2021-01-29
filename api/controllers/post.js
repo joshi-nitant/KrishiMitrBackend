@@ -1,13 +1,34 @@
 const sequelize = require('../config/database');
+// <<<<<<< master
 
 const Post = require('../models/post');
 const UserCrop = require('../models/user_crops');
 const TimelineEvent = require('../models/timelive_events');
 const checkAuth = require('../middleware/check-auth');
 
+// =======
+// const Post = require('../models/post');
+// const UserCrop = require('../models/user_crops');
+// >>>>>>> master
 
 exports.get_all_post = (req, res, next) => {
+    const id = req.params.id;
     // const id = req.params.userId;
+    Post.findAll({ include: [{ model: UserCrop, as: 'usercrop' }], where: { cropId: id } }).then(Posts => {
+        const response = {
+            count: Posts.length,
+            Posts: Posts,
+        }
+        res.status(200).json(response);
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err,
+        });
+    });
+
+
+    Post.findAll({ where: { userCropId: { $in: sequelize.literal(`select userCropId from UserCrop where cropId = ${id}`) } } });
     Post.findAll().then(Posts => {
         const response = {
             count: Posts.length,
@@ -22,6 +43,7 @@ exports.get_all_post = (req, res, next) => {
     })
 };
 
+// <<<<<<< master
 exports.get_post_on_crop = (req, res, next) => {
 
     const id = req.params.cropId;
@@ -107,9 +129,13 @@ exports.get_post_on_crop = (req, res, next) => {
 
 }
 
+// exports.add_post = (req, res, next) => {
+//     console.log("here");
+//     console.log(req.body)
+// =======
 exports.add_post = (req, res, next) => {
-    console.log("here");
-    console.log(req.body)
+    console.log(req.body);
+// >>>>>>> master
     const post = {
         "timeLineId": req.body.timeLineId,
         "likeCount": 0,
