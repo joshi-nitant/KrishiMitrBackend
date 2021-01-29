@@ -154,7 +154,7 @@ exports.update_like_count = (req, res, next) => {
     const post = {
         'likeCount': req.body.likeCount
     };
-
+    Post.findAll()
     Post.update(post, { where: { postId: id } }).then(num => {
         if (num == 1) {
             res.status(200).json({
@@ -169,6 +169,7 @@ exports.update_like_count = (req, res, next) => {
         console.log(err);
         res.status(500).json({
             error: err,
+            message: "fail in update",
         })
     });
 };
