@@ -30,7 +30,7 @@ exports.add_user_crop = (req, res, next) => {
     }
 
     UserCrop.create(userCrop).then(data => {
-        req.body.postDescription = "User crop updated";
+        req.body.postDescription = `${req.body.cropCity}, ${req.body.croptaluka}, ${req.body.cropState}\n Area-${req.body.area}`;
         req.body.timeLineId = null;
         req.body.userCropId = data.userCropId;
         next();

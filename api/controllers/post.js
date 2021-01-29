@@ -69,7 +69,8 @@ exports.get_post_on_crop = (req, res, next) => {
                     likeCount:post.likeCount,
                     title:post.TimeLineEvent.title,
                     userId: post.TimeLineEvent.UserCrop.userId,
-                    postDate:post.TimeLineEvent.timelineDate                                    
+                    postDate:post.TimeLineEvent.timelineDate,
+                    isUserCrop: 0
                 }
 
             });
@@ -81,7 +82,8 @@ exports.get_post_on_crop = (req, res, next) => {
                     likeCount:post.likeCount,
                     title:post.UserCrop.breed,
                     userId: post.UserCrop.userId,
-                    postDate: post.UserCrop.cropDate
+                    postDate: post.UserCrop.cropDate,
+                    isUserCrop: 1
                 }
             });
             bigPost = bigPost.concat(bigPost2);
