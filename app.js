@@ -38,16 +38,18 @@ const checkAuth = require('./api/middleware/check-auth');
 const postRoutes = require('./api/routes/post');
 const commentRoutes = require('./api/routes/comment');
 const replyRoutes = require('./api/routes/reply');
+const likeRoutes = require('./api/routes/like');
 
 
 //Routes which should handle the request
 app.use('/users', userRoutes);
 app.use('/crops', checkAuth, cropRoutes);
-app.use('/userCrops', checkAuth, userCropRoutes);
-app.use('/timeline', checkAuth, timelineEventRoutes);
+app.use('/userCrops', userCropRoutes);
+app.use('/timeline',timelineEventRoutes);
 app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);
 app.use('/reply', replyRoutes);
+app.use('/like', likeRoutes);
 
 //If nothing is matched
 app.use((req, res, next) => {

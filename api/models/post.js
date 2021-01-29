@@ -39,6 +39,18 @@ TimeLineEvent.hasMany(Post, {
     onDelete: 'CASCADE',
     foreignKey: 'timeLineId'
 });
+
+Post.belongsTo(TimeLineEvent, {
+    onDelete: 'CASCADE',
+    foreignKey: 'timeLineId'
+});
+
+Post.belongsTo(UserCrop,{
+    onDelete: 'CASCADE',
+    foreignKey: 'userCropId'
+});
+
+
 UserCrop.hasMany(Post, {
     onDelete: 'CASCADE',
     foreignKey: 'userCropId'

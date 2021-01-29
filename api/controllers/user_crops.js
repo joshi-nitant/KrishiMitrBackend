@@ -29,7 +29,13 @@ exports.add_user_crop = (req, res, next) => {
         "breed": req.body.breed
     }
 
-    UserCrop.create(userCrop).then(data => { res.status(201).json(data); }).catch(err => {
+    UserCrop.create(userCrop).then(data => {
+        req.body.postDescription = `${req.body.cropCity}, ${req.body.croptaluka}, ${req.body.cropState}\n Area-${req.body.area}`;
+        req.body.timeLineId = null;
+        req.body.userCropId = data.userCropId;
+        next();
+    }).catch
+    (err => {
         console.log(err);
         res.status(500).json({ error: err });
     })

@@ -32,6 +32,7 @@ exports.get_specific_users = (req, res, next) => {
     });
 };
 
+
 exports.register_user = (req, res, next) => {
     console.log("here");
     Users.findAll({ where: { userContactNumber: req.body.userContactNumber } }).then(users => {

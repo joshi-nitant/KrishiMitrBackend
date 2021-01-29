@@ -34,4 +34,9 @@ UserCrop.hasMany(TimelineEvent, {
     foreignKey: 'userCropId'
 });
 
+TimelineEvent.belongsTo(UserCrop,{
+    onDelete: 'CASCADE',
+    foreignKey: 'userCropId'
+});
+
 module.exports = TimelineEvent;
