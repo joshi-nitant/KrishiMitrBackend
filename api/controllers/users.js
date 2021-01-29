@@ -117,44 +117,53 @@ exports.login_user = (req, res, next) => {
 }
 
 exports.update_user = (req, res, next) => {
-    console.log(req.file);
     const id = req.params.userId;
-    bcrypt.hash(req.body.userpassword, 10, (err, hash) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({
-                error: err
+    var User;
+    if (req.file !== undefined) {
+        User = {
+            "userName": req.body.userName,
+            "userContactNumber": req.body.userContactNumber,
+            "userCity": req.body.userCity,
+            "userState": req.body.userState,
+            "userProfileUrl": req.file.filename
+        }
+    } else {
+        User = {
+            "userName": req.body.userName,
+            "userContactNumber": req.body.userContactNumber,
+            "userCity": req.body.userCity,
+            "userState": req.body.userState,
+
+        }
+    }
+
+    Users.update(User, { where: { userId: id } }).then(num => {
+        if (num == 1) {
+            res.status(200).json({
+                message: "Updated Succefully"
             });
         } else {
-            const User = {
-                "userName": req.body.userName,
-                "userContactNumber": req.body.userContactNumber,
-                "userCity": req.body.userCity,
-                "userState": req.body.userState,
-                "userpassword": hash,
-                "userProfileUrl": req.file.filename
-            }
-            Users.update(User, { where: { userId: id } }).then(num => {
-                if (num == 1) {
-                    res.status(200).json({
-                        message: "Updated Succefully"
-                    });
-                } else {
-                    res.status(200).json({
-                        message: "Updation Unsuccefull. May be the row not found."
-                    });
-                }
-            }).catch(err => {
-                console.log(err);
-                res.status(500).json({
-                    error: err,
-                })
+            res.status(200).json({
+                message: "Updation Unsuccefull. May be the row not found."
             });
         }
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err,
+        })
     });
+    // bcrypt.hash(req.body.userpassword, 10, (err, hash) => {
+    //     if (err) {
+    //         console.log(err);
+    //         return res.status(500).json({
+    //             error: err
+    //         });
+    //     } else {
+    //         
 
-
-
+    //     }
+    // });
 };
 
 exports.delete_user = (req, res, next) => {

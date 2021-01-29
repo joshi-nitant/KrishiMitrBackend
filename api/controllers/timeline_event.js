@@ -40,7 +40,7 @@ exports.add_timeline = (req, res, next) => {
         "userCropId": req.body.userCropId
     }
     TimelineEvent.create(Timeline).then(data => {
-        console.log(data);
+
         req.body.postDescription = "Timeline updated";
         req.body.timeLineId = data.timelineId;
         req.body.userCropId = null;

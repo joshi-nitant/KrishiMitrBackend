@@ -34,8 +34,7 @@ exports.add_user_crop = (req, res, next) => {
         req.body.timeLineId = null;
         req.body.userCropId = data.userCropId;
         next();
-    }).catch
-    (err => {
+    }).catch(err => {
         console.log(err);
         res.status(500).json({ error: err });
     })
