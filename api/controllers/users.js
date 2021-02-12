@@ -34,7 +34,7 @@ exports.get_specific_users = (req, res, next) => {
 
 
 exports.register_user = (req, res, next) => {
-    console.log("here");
+
     Users.findAll({ where: { userContactNumber: req.body.userContactNumber } }).then(users => {
         if (users.length >= 1) {
             return res.status(409).json({
@@ -99,7 +99,7 @@ exports.login_user = (req, res, next) => {
                     );
                     return res.status(200).json({
                         message: "Auth successful",
-                        userId: users[0].userId,
+                        user: users[0],
                         token: token
                     });
                 }
