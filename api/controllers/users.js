@@ -53,7 +53,7 @@ exports.register_user = (req, res, next) => {
                         "userCity": req.body.userCity,
                         "userState": req.body.userState,
                         "userpassword": hash,
-
+                        "userProfileUrl": "kisan.PNG"
                     }
 
                     Users.create(User).then(data => { res.status(201).json(data); }).catch(err => {
@@ -115,7 +115,6 @@ exports.login_user = (req, res, next) => {
             });
         });
 }
-
 exports.update_user = (req, res, next) => {
     const id = req.params.userId;
     var User;
