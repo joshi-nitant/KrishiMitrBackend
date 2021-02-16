@@ -29,7 +29,7 @@ io.on('connection', socket => {
     socket.on('chatMessage', (data) => {
         data = JSON.parse(data);
         console.log(data);
-        socket.to(data.groupId).emit('message', formatMessage(data, data.message));
+        socket.to(data.groupId).emit('message', JSON.stringify(formatMessage(data, data.message)));
     });
 
     // Runs when client disconnects

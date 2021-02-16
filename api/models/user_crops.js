@@ -54,6 +54,6 @@ Crop.hasMany(UserCrop, {
 User.hasMany(UserCrop, {
     onDelete: 'CASCADE',
     foreignKey: 'userId'
-}); 
+});
 
 module.exports = UserCrop;
