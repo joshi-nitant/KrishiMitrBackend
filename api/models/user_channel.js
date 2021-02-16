@@ -34,7 +34,7 @@ Group.hasMany(UserChannel, {
     foreignKey: 'groupId'
 });
 
-User.hasMany(UserCrop, {
+User.hasMany(UserChannel, {
     onDelete: 'CASCADE',
     foreignKey: 'userId'
 });

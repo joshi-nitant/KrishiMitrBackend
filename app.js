@@ -40,6 +40,7 @@ const commentRoutes = require('./api/routes/comment');
 const replyRoutes = require('./api/routes/reply');
 const likeRoutes = require('./api/routes/like');
 const ChannelRoutes = require('./api/routes/channel');
+const userChannelRoutes = require('./api/routes/user_channel');
 
 //Routes which should handle the request
 app.use('/users', userRoutes);
@@ -51,7 +52,7 @@ app.use('/comments', commentRoutes);
 app.use('/reply', replyRoutes);
 app.use('/like', likeRoutes);
 app.use('/channel', ChannelRoutes);
-
+app.use('/userChannel', userChannelRoutes);
 
 //If nothing is matched
 app.use((req, res, next) => {
