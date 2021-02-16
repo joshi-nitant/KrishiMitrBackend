@@ -5,7 +5,8 @@ function formatMessage(user, text) {
         "userId": user.userId,
         "userName": user.userName,
         "message": text,
-        "time": moment().format('h:mm a')
+        "groupId": user.groupId,
+        "messageTime": new Date(Date.now()).toISOString(),
     };
 }
 
