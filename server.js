@@ -1,6 +1,8 @@
 const { app } = require('./app');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+const UserChannel = require('./api/models/user_channel');
+
 const {
     userJoin,
     getCurrentUser,
@@ -8,6 +10,7 @@ const {
     getRoomUsers
 } = require('./api/utils/online_users');
 const formatMessage = require('./api/utils/format_message');
+
 
 const port = process.env.PORT || 3000;
 
@@ -17,12 +20,19 @@ io.on('connection', socket => {
     console.log("connected a client");
     socket.on('joinChannel', (user) => {
         user = JSON.parse(user);
-
+        console.log("user Id = " + user.userId);
         console.log("client connected = " + user.userName);
+        UserChannel.findAll({ where: { userId: user.userId } }).then(channels => {
+            channels.forEach((channel) => {
+                console.log(channel.groupId);
+                userJoin(socket.id, user.userId, user.userName, channel.groupId);
+                socket.join(channel.groupId);
+            });
 
-        userJoin(socket.id, user.userId, user.userName, user.groupId);
+        }).catch(err => {
+            console.log(err);
+        });
 
-        socket.join(user.groupId);
     });
 
     // Listen for chatMessage
