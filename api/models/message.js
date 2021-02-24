@@ -27,7 +27,7 @@ const Message = db.define('Message', {
         type: Sequelize.TEXT,
 
     },
-    messgaeDate: {
+    messageDate: {
         type: Sequelize.DATE
     }
 }, {
@@ -37,12 +37,12 @@ const Message = db.define('Message', {
 
 Group.hasMany(Message, {
     onDelete: 'CASCADE',
-    foreignKey: 'groupid'
+    foreignKey: 'groupId'
 });
 
 User.hasMany(Message, {
     onDelete: 'CASCADE',
-    foreignKey: 'userId'
+    foreignKey: 'senderId'
 });
 
 module.exports = Message;

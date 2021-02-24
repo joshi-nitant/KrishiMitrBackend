@@ -2,7 +2,7 @@ const { app } = require('./app');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const UserChannel = require('./api/models/user_channel');
-
+const Messages = require('./api/models/message');
 const {
     userJoin,
     getCurrentUser,
@@ -39,6 +39,17 @@ io.on('connection', socket => {
     socket.on('chatMessage', (data) => {
         data = JSON.parse(data);
         console.log(data);
+        const Message = {
+            "senderId": data.userId,
+            "groupId": data.groupId,
+            "message": data.message,
+            "messageDate": data.messageTime
+        }
+        Messages.create(Message).then(data => {
+            console.log("Message inserted");
+        }).catch(err => {
+            console.log(err);
+        });
         socket.to(data.groupId).emit('message', JSON.stringify(formatMessage(data, data.message)));
     });
 

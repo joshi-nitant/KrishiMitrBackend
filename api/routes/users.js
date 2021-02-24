@@ -38,7 +38,7 @@ const upload = multer({
 router.get('/', UserController.get_all_users);
 
 //Get specific User
-router.get('/:userId', checkAuth, UserController.get_specific_users);
+router.get('/:userId', UserController.get_specific_users);
 
 //Create new user
 router.post('/', upload.single('userProfilePic'), UserController.register_user);
